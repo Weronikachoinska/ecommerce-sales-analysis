@@ -110,87 +110,47 @@ AVERAGE(reviews[review_score])
 
 ## Dynamic Insight
 
-Customer Insight = 
+Customer Insight =
 VAR SelectedSegment =
-    SELECTEDVALUE(rfm[segment])
-
+    SELECTEDVALUE ( rfm[segment] )
 VAR CustomerShare =
-    DIVIDE(
+    DIVIDE (
         [Total Customers],
-        CALCULATE([Total Customers],
-        ALL(rfm[segment]))
+        CALCULATE ( [Total Customers], ALL ( rfm[segment] ) )
     )
-
 VAR OverallRepeatRate =
-    CALCULATE(
-        [Repeat Customers Rate],
-        ALL(rfm[segment])
-    )
-
-VAR SegmentDescription  =
-    SWITCH(
+    CALCULATE ( [Repeat Customers Rate], ALL ( rfm[segment] ) )
+VAR SegmentDescription =
+    SWITCH (
         SelectedSegment,
-
-        "Champions",
-        "Most valuable customers. They purchase regularly and generate high revenue.",
-
-        "Big Spenders",
-        "Customers who place high-value orders.",
-
-        "Loyal Customers",
-        "Customers who make repeat purchases and provide a stable source of revenue.",
-
-        "Regular",
-        "Customers with average purchasing behavior.",
-
-        "New Customers",
-        "Recently acquired customers who are making their first purchase.",
-
-        "Lost Customers",
-        "Customers who have not returned for a long time."
-
+        "Champions", "Most valuable customers. They purchase regularly and generate high revenue.",
+        "Big Spenders", "Customers who place high-value orders.",
+        "Loyal Customers", "Customers who make repeat purchases and provide a stable source of revenue.",
+        "Regular", "Customers with average purchasing behavior.",
+        "New Customers", "Recently acquired customers who are making their first purchase.",
+        "Lost Customers", "Customers who have not returned for a long time."
     )
-
-
 RETURN
-IF(
-    NOT HASONEVALUE(rfm[segment]),
-      "Overall Customer Summary" &
-    UNICHAR(10) &
-    UNICHAR(10) &
-    "• Total customers: " &
-    FORMAT([Total Customers], "#,##0") &
-    UNICHAR(10) &
-    "• Repeat purchase rate: " &
-    FORMAT([Repeat Customers Rate], "0.00%") &
-    UNICHAR(10) &
-    "• Average order value: " &
-    FORMAT([Average Order Value], "R$#,##0.00") &
-    UNICHAR(10) &
-    UNICHAR(10) &
-    "Most customers purchased only once." &
-    UNICHAR(10) &
-    UNICHAR(10) &
-     "Select a single segment to view detailed insights.",
-
-SelectedSegment &
-UNICHAR(10) &
-UNICHAR(10)&
-SegmentDescription &
-UNICHAR(10) &
-FORMAT(CustomerShare, "0.00%") &
-" of all customers (" &
-FORMAT([Total Customers], "#,##0") &
-") belong to this segment." &
-UNICHAR(10) &
-"The repeat purchase rate is " &
-FORMAT([Repeat Customers Rate], "0.00%") &
-" compared with an overall rate of " &
-FORMAT(OverallRepeatRate, "0.00%") &
-"." &
-UNICHAR(10) &
-"The average order value is " &
-FORMAT([Average Order Value], "R$#,##0.00") &
-", while revenue per customer is " &
-FORMAT([Revenue per Customer], "R$#,##0.00") &
-".")
+    IF (
+        NOT HASONEVALUE ( rfm[segment] ),
+        "Overall Customer Summary" & UNICHAR ( 10 ) & UNICHAR ( 10 ) & "• Total customers: "
+            & FORMAT ( [Total Customers], "#,##0" )
+            & UNICHAR ( 10 ) & "• Repeat purchase rate: "
+            & FORMAT ( [Repeat Customers Rate], "0.00%" )
+            & UNICHAR ( 10 ) & "• Average order value: "
+            & FORMAT ( [Average Order Value], "R$#,##0.00" )
+            & UNICHAR ( 10 )
+            & UNICHAR ( 10 ) & "Most customers purchased only once."
+            & UNICHAR ( 10 )
+            & UNICHAR ( 10 ) & "Select a single segment to view detailed insights.",
+        SelectedSegment & UNICHAR ( 10 ) & UNICHAR ( 10 ) & SegmentDescription
+            & UNICHAR ( 10 )
+            & FORMAT ( CustomerShare, "0.00%" ) & " of all customers ("
+            & FORMAT ( [Total Customers], "#,##0" ) & ") belong to this segment."
+            & UNICHAR ( 10 ) & "The repeat purchase rate is "
+            & FORMAT ( [Repeat Customers Rate], "0.00%" ) & " compared with an overall rate of "
+            & FORMAT ( OverallRepeatRate, "0.00%" ) & "."
+            & UNICHAR ( 10 ) & "The average order value is "
+            & FORMAT ( [Average Order Value], "R$#,##0.00" ) & ", while revenue per customer is "
+            & FORMAT ( [Revenue per Customer], "R$#,##0.00" ) & "."
+    )
