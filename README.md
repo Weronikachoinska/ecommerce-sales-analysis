@@ -70,7 +70,7 @@ Python was used to:
 - Conduct cohort analysis
 - Export cleaned data to PostgreSQL
 
-View [Jupyter Notebook](ecommerce_analysis.ipynb)
+View [Jupyter Notebook](python/ecommerce_analysis.ipynb)
 
 The cleaned data was stored in PostgreSQL, where additional business analyses were performed using SQL.
 
